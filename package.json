@@ -1,0 +1,22 @@
+{
+  "name": "fastify-task",
+  "version": "1.0.0",
+  "description": "JatDev Fastify Task",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon src/server.ts",
+    "build": "tsc",
+    "start": "npm run build && nodemon dist/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.4",
+    "fastify": "^4.27.0",
+    "ws": "^8.17.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "author": "Youssef Shaaban",
+  "license": "ISC"
+}
