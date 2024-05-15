@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "bc061d15-6fdc-498d-a669-7d0a292e4cff",
+		"name": "Users-Task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15622340"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GET ALL USERS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{USERS}}",
+							"host": [
+								"{{USERS}}"
+							]
+						},
+						"description": "Use this endpoint to get all the users stored in the database. Only admins can use these routes, **please login with admin account to contiune use them.**"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{USERS}}/664253d8f886061bf9fdbce0",
+							"host": [
+								"{{USERS}}"
+							],
+							"path": [
+								"664253d8f886061bf9fdbce0"
+							]
+						},
+						"description": "Get a user passing his id as a parameter. Only admins can perform this action."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{USERS}}/664259c3f848202fd2d253b9",
+							"host": [
+								"{{USERS}}"
+							],
+							"path": [
+								"664259c3f848202fd2d253b9"
+							]
+						},
+						"description": "Admins are also able to edit every user passing in their id. Regular users can't use this route, not even if they pass in their own id (to update your own user data, please use /me."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{USERS}}/6642538086bf87386811a10b",
+							"host": [
+								"{{USERS}}"
+							],
+							"path": [
+								"6642538086bf87386811a10b"
+							]
+						},
+						"description": "Passing in the user id, admins are able to delete users. Expect a 204 No Content status code and no data back."
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test User\",\r\n    \"email\": \"your1-email@email.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{USERS}}",
+							"host": [
+								"{{USERS}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"jwt\", pm.response.json().token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test User\",\r\n    \"email\": \"test@email.com\",\r\n    \"password\": \"123456\",\r\n    \"role\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH}}/signup",
+							"host": [
+								"{{AUTH}}"
+							],
+							"path": [
+								"signup"
+							]
+						},
+						"description": "Sign up providing your name, email, role and password.\n\nThe email must be unique (never used to create an account before)."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"jwt\", pm.response.json().token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@email.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH}}/login",
+							"host": [
+								"{{AUTH}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Login using your email and password. Your session will last 5 days, after that you'll have to login again."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication and Generation of tokens using signup or login"
+		},
+		{
+			"name": "Example of Send message from user with tokens and body contains message and to account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"Hello Test\",\r\n    \"to\": \"66448804b1b3bc5fe7d1e51d\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "ws://localhost:3030?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDQ4N2ZkYjFiM2JjNWZlN2QxZTUxYiIsImlhdCI6MTcxNTc2Nzk2NywiZXhwIjoxNzE2MzcyNzY3fQ.RkBf7NxdihKqd3fuuHjwjGoTLPxRCZ_Z15oE6jbQmMo",
+					"protocol": "ws",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDQ4N2ZkYjFiM2JjNWZlN2QxZTUxYiIsImlhdCI6MTcxNTc2Nzk2NywiZXhwIjoxNzE2MzcyNzY3fQ.RkBf7NxdihKqd3fuuHjwjGoTLPxRCZ_Z15oE6jbQmMo"
+						}
+					]
+				},
+				"description": "Use this as example to take this url copy to a new Websocket request from postman.\n\nSend the message as the body performed in this request with the user id in \"to\" and your message in \"content\"\n\n\\-- you can check the connection by send the connection without token and you will see you are connected successfully but with error message: \"{\"error\":\"Missing token\"}\""
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "USERS",
+			"value": "{{BASE_URL}}/users",
+			"type": "string"
+		},
+		{
+			"key": "AUTH",
+			"value": "{{BASE_URL}}/auth",
+			"type": "string"
+		},
+		{
+			"key": "jwt",
+			"value": ""
+		}
+	]
+}

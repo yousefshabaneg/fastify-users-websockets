@@ -8,6 +8,7 @@ interface WebSocketMessage {
 }
 
 async function handleWebSocketConnection(ws: WebSocket, req: any) {
+  ws.send("connected successfully");
   // Extract token from URL query parameter
   const token = req.url?.split("token=")[1];
   if (!token) {

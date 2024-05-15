@@ -4,10 +4,9 @@ import InitializeMongoose from "./shared/config/database";
 import { Server } from "ws";
 import WebSocketHandlers from "./websocket";
 
-const server = FastifyServer();
-
 async function main() {
   try {
+    const server = await FastifyServer();
     const PORT = config.apiPort;
     //Init MongoDb
     InitializeMongoose();
