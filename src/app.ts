@@ -1,7 +1,7 @@
-import Fastify, { FastifyError, FastifyReply, FastifyRequest } from "fastify";
+import Fastify from "fastify";
 import userRoutes from "./modules/users/users.routes";
-import AppError from "./shared/helpers/AppError";
 import ErrorHandler from "./shared/helpers/error.handler";
+import authRoutes from "./modules/auth/auth.routes";
 
 function FastifyServer() {
   const fastify = Fastify({
@@ -11,6 +11,7 @@ function FastifyServer() {
   fastify.setErrorHandler(ErrorHandler);
 
   fastify.register(userRoutes, { prefix: "/users" });
+  fastify.register(authRoutes, { prefix: "/auth" });
 
   return fastify;
 }

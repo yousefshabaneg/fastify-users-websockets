@@ -1,9 +1,13 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import UserModel from "./users.model";
+import UserModel, { IUser } from "./users.model";
 import ApiStatus from "../../shared/types/apiStatus.enum";
 import AppError from "../../shared/helpers/AppError";
 
-type UserParams = { Params: { id: string } };
+type UserParamsSchema = { Params: { id: string } };
+type UpdateUserSchema = {
+  Params: { id: string };
+  Body: IUser;
+};
 
 class UserController {
   static getAllUsers = async (req: FastifyRequest, reply: FastifyReply) => {
@@ -15,7 +19,7 @@ class UserController {
   };
 
   static getUser = async (
-    req: FastifyRequest<UserParams>,
+    req: FastifyRequest<UserParamsSchema>,
     reply: FastifyReply
   ) => {
     const { id } = req.params;
@@ -38,12 +42,12 @@ class UserController {
   };
 
   static updateUser = async (
-    req: FastifyRequest<UserParams>,
+    req: FastifyRequest<UpdateUserSchema>,
     reply: FastifyReply
   ) => {
     const { id } = req.params;
 
-    const user = await UserModel.findByIdAndUpdate(id, req.body as {});
+    const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true });
 
     if (!user) throw AppError.NotFoundException("This user doest not exist");
 
@@ -54,7 +58,7 @@ class UserController {
   };
 
   static deleteUser = async (
-    req: FastifyRequest<UserParams>,
+    req: FastifyRequest<UserParamsSchema>,
     reply: FastifyReply
   ) => {
     const { id } = req.params;
