@@ -21,13 +21,13 @@ This is a simple WebSocket chat application built with Fastify and ws library.
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/websocket-chat-app.git
+git clone https://github.com/yousefshabaneg/fastify-users-websockets.git
 ```
 
 2. Install dependencies:
 
 ```bash
-cd websocket-chat-app
+cd fastify-users-websockets
 npm install
 ```
 
